@@ -153,6 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams();
         if (pesquisaInput) params.append('pesquisa', pesquisaInput.value);
         if (teamSelect) params.append('team_id', teamSelect.value);
+        if (window.USER_ROLE === 'usuario') {
+            params.append('user_id', window.USER_ID);
+        }
         
         // Fazer a requisição
         fetch(`api_tickets.php?${params.toString()}`)

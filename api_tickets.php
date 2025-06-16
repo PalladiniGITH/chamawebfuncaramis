@@ -30,6 +30,10 @@ if (!empty($_GET['pesquisa'])) {
 if (!empty($_GET['team_id'])) {
     $queryParams['team_id'] = $_GET['team_id'];
 }
+if ($role === 'usuario') {
+    $queryParams['user_id'] = $user_id;
+}
+
 if (!empty($queryParams)) {
     $apiUrl .= '?' . http_build_query($queryParams);
 }

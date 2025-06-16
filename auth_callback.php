@@ -4,6 +4,7 @@ require_once 'vendor/autoload.php';
 require_once 'inc/CognitoAuth.php';
 require_once 'inc/connect.php';
 require_once 'shared/log.php';
+require_once 'auth_token.php';
 
 if (!isset($_GET['code'])) {
     header('Location: /index.php?erro=2');
@@ -64,6 +65,11 @@ $_SESSION['user_id'] = $user['id'];
 $_SESSION['nome'] = $user['nome'];
 $_SESSION['role'] = $user['role'];
 $_SESSION['cognito_auth'] = true;
+$_SESSION['jwt'] = jwt_encode([
+    'id' => $user['id'],
+    'role' => $user['role'],
+    'exp' => time() + 3600
+]);
 
 registrarLog($pdo, 'LOGIN', 'Login via Cognito', $user['id']);
 header('Location: dashboard.php');
