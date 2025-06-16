@@ -21,9 +21,16 @@ if (!$payload) {
 
 switch ($method) {
     case 'GET':
+        $userRole = $payload['role'] ?? '';
+        $payloadUser = $payload['id'] ?? null;
         $pesquisa = $_GET['pesquisa'] ?? '';
         $team_id = $_GET['team_id'] ?? '';
         $user_id = $_GET['user_id'] ?? '';
+
+        // Usuários comuns só podem acessar seus próprios chamados
+        if ($userRole === 'usuario') {
+            $user_id = $payloadUser;
+        }
 
         $where = [];
         $params = [];
@@ -61,7 +68,14 @@ switch ($method) {
         break;
 
     case 'POST':
+        $userRole = $payload['role'] ?? '';
+        $payloadUser = $payload['id'] ?? null;
         $data = json_decode(file_get_contents("php://input"), true);
+
+        // Para usuários comuns, forçar o user_id para o do token
+        if ($userRole === 'usuario') {
+            $data['user_id'] = $payloadUser;
+        }
 
         $camposObrigatorios = ['titulo', 'descricao', 'tipo', 'prioridade', 'risco', 'user_id'];
         foreach ($camposObrigatorios as $campo) {
@@ -146,3 +160,4 @@ switch ($method) {
     break;
 
 }
+
