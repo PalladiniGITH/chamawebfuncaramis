@@ -23,6 +23,7 @@ switch ($method) {
     case 'GET':
         $pesquisa = $_GET['pesquisa'] ?? '';
         $team_id = $_GET['team_id'] ?? '';
+        $user_id = $_GET['user_id'] ?? '';
 
         $where = [];
         $params = [];
@@ -35,6 +36,11 @@ switch ($method) {
         if (!empty($team_id)) {
             $where[] = "assigned_team_id = :tid";
             $params[':tid'] = $team_id;
+        }
+
+        if (!empty($user_id)) {
+            $where[] = "user_id = :uid";
+            $params[':uid'] = $user_id;
         }
 
         if ($id) {

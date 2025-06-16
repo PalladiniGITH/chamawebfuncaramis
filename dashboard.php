@@ -17,6 +17,9 @@ $role    = $_SESSION['role'];
 
 // Chamada à API via gateway
 $apiUrl = 'http://gateway:80/tickets';
+if ($role === 'usuario') {
+    $apiUrl .= '?user_id=' . urlencode($user_id);
+}
 $ch = curl_init($apiUrl);
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -49,6 +52,8 @@ if ($role !== 'usuario') {
 <link rel="stylesheet" href="/css/theme.css" />
   <script>
     window.JWT_TOKEN = '<?php echo $_SESSION['jwt']; ?>';
+    window.USER_ROLE = '<?php echo $role; ?>';
+    window.USER_ID = '<?php echo $user_id; ?>';
   </script>
 </head>
 <body>
